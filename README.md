@@ -1,2 +1,2 @@
 # boodygram
-this is a Django training project for an website similar to instagram. the name of " BoodyGram " is a mixture of Boody( Abdelrahman Ghareeb - my awesome teacher- ) and InstaGram
+this is a Django training project for an website similar to instagram. the name of " BoodyGram " is a mixture of Boody( Abdelrahman Ghareeb - my awesome teacher- ) and InstaGram :) :D
