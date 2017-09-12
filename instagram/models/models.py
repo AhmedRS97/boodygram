@@ -22,18 +22,20 @@ class User(AbstractBaseUser):
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['first_name', 'last_name', 'birthday', 'gender']
     
-class Comments(models.Model):
+class Comment(models.Model):
     user = models.ForeignKey(User)
     comment = models.TextField()
-    date = models.DateTimeField()
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
 
 class Post(models.Model):
     user = models.ForeignKey(User, related_name='user')
-    date = models.DateTimeField()
-    description = models.TextField()
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+    description = models.TextField(null=True, blank=True)
     tag_user = models.ForeignKey(User, related_name='tag_user')
     address = models.CharField(max_length=255)
     location = PlainLocationField(based_fields=['address'], zoom=7)
-    image = models.ImageField(null=True, blank=True)
-    comments = models.ForeignKey(Comments)
+    image = models.ImageField()
+    comments = models.ForeignKey(Comment)
 

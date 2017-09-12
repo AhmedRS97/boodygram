@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from models.models import User, Post, Comments
+from models.models import User, Post, Comment
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login
 # Create your views here.
