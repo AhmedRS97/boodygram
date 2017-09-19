@@ -33,6 +33,17 @@ class User(AbstractBaseUser):
     '''the required fields obviously is the additional fields that will be
        also stored with Email and password'''
     REQUIRED_FIELDS = ['first_name', 'last_name', 'birthday', 'gender']
+    privateAccount = models.BooleanField(default=False)
+    '''
+    this method is responsible for making the account private.
+    '''
+    def setAccountToBePrivate(self):
+        self.privateAccount = True
+    '''
+    this method is responsible for making the account public.
+    '''
+    def setAccoutToBePublic(self):
+        self.privateAccount = False
 
 class Comment(models.Model):
     user = models.ForeignKey(User) # ForeignKey to the user
