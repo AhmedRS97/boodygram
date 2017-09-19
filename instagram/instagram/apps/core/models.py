@@ -61,4 +61,9 @@ class Post(models.Model):
        though it's javascript have errors !!'''
     location = PlainLocationField(based_fields=['address'], zoom=7)
     image = models.ImageField() #obviously it's an ImageField :3
-    comments = models.ForeignKey(Comment) # ForeignKey to the comment
+    comments = models.ForeignKey(Comment,null=True, blank=True) # ForeignKey to the comment
+
+class Follow(models.Model):
+    follower = models.ForeignKey(User, related_name="Follower")
+    followDate = models.DateField(auto_now=True)
+    followed = models.ForeignKey(User, related_name="Followed")

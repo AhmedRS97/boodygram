@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect # it's Crystal clear :3
 from .models import Post, User # importing the post model
 from .forms import PostForm # importing the PostForm
 from django.http import HttpResponse
+from django.contrib.auth.decorators import login_required
 
 #project_phase = get_model('core', 'project_phase') # i'm kinda lazy :D
 
@@ -12,12 +13,13 @@ def MainPage(request):
     return render(request, 'base.html')
 
 # defining the Post view :3
+@login_required
 def PostFormView(request):
     if request.method == "POST":
         form = PostForm(request.POST, request.FILES)
         if form.is_valid():
             post = form.save(commit=False)
-            post.user = request.user #User.object.get(pk=) #workaround ?
+            post.user = User.objects.get(pk=request.user.pk) #workaround ?
             #post.created = timezone.now() # under test
             post.save()
             return redirect('admin/') #, pk=post.pk)
