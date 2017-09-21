@@ -53,6 +53,9 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'instagram.urls'
 
+
+# I was having a (template doesn't exist error) so I Inserted values inside
+# DIRS Key.
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -84,7 +87,7 @@ DATABASES = {
 #    }
 
      'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
         'NAME': 'boodygram',
         'USER': 'ahmed',
         'PASSWORD': 'Virus357159++',
@@ -130,6 +133,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# in order to make the User model that inherit from AbstractUser work, the below
+# setting must be assgined to the (appname + name of the user model)
+AUTH_USER_MODEL = 'core.User'
 
 '''
 PASSWORD_HASHERS = [
