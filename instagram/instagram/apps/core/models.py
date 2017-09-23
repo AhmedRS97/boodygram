@@ -36,34 +36,32 @@ class User(AbstractBaseUser):
 
 class Comment(models.Model):
     user = models.ForeignKey(User) # ForeignKey to the user
-    '''parms below is denoting that this field is Optional and django can
-       put empty data in it. '''
     comment = models.TextField(null=True, blank=True)
-    '''the parm below is needed to force django to populate
+    '''the params below is needed to force django to populate
        the field with current date on everytime data is saved to this model.'''
-    created = models.DateTimeField(auto_now_add=True) # add data.
-    updated = models.DateTimeField(auto_now=True) # update data.
+    created = models.DateTimeField(auto_now_add=True) # add current date.
+    updated = models.DateTimeField(auto_now=True) # update date.
 
 #this model is for storing posts as you can see :3
 class Post(models.Model):
     user = models.ForeignKey(User, related_name='user') #ForeignKey to user
-    '''important note: the parm below is needed to force django to populate
+    '''important note: the params below is needed to force django to populate
        the field with current date on everytime data is saved to this model.'''
-    created = models.DateTimeField(auto_now_add=True) # add data.
-    updated = models.DateTimeField(auto_now=True) # update data.
-    '''parms below is denoting that this field is Optional and django can
+    created = models.DateTimeField(auto_now_add=True) # add current date.
+    updated = models.DateTimeField(auto_now=True) # update date.
+    '''params below is denoting that this field is Optional and django can
        put empty data in it'''
-    description = models.TextField(null=True, blank=True)
-    tag_user = models.ForeignKey(User, related_name='tag_user') # taging users
+    description = models.TextField(null=True, blank=True) # data isn't required
+    '''tagging users, I think there's a logical error here.
+     it will be changed soon to tag people on photos instead.
+     also it isn't required.
+     '''
+    tag_user = models.ForeignKey(User, related_name='tag_user',null=True, blank=True)
     '''adding address for the location_field, it needs improvements IMO.'''
-    address = models.CharField(max_length=255)
+    address = models.CharField(max_length=255, null=True, blank=True)
     '''PlainLocationField is a field Inherited from location_field Lib.
-       though it's javascript have errors !!'''
-    location = PlainLocationField(based_fields=['address'], zoom=7)
+       though its javascript is having errors! no data is required'''
+    location = PlainLocationField(based_fields=['address'], zoom=7,null=True, blank=True)
     image = models.ImageField() #obviously it's an ImageField :3
-    comments = models.ForeignKey(Comment,null=True, blank=True) # ForeignKey to the comment
-
-class Follow(models.Model):
-    follower = models.ForeignKey(User, related_name="Follower")
-    followDate = models.DateField(auto_now=True)
-    followed = models.ForeignKey(User, related_name="Followed")
+    # ForeignKey to the comment, though it's not required
+    comments = models.ForeignKey(Comment,null=True, blank=True)
