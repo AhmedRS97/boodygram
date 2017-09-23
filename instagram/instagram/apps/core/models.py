@@ -16,6 +16,8 @@ class User(AbstractBaseUser):
     first_name = models.CharField(max_length=60) #it's      obvious
     last_name = models.CharField(max_length=60)  #    Pretty       :3
     birthday = models.DateField() #obvious too :3
+    biography = models.TextField(null=True, blank=True) # data isn't required
+    avatar = models.ImageField(null=True, blank=True) # data isn't required
     GENDER_CHOICES = (
         ('M', 'Male'),
         ('F', 'Female'),
