@@ -36,7 +36,7 @@ class User(AbstractBaseUser):
 
 class Comment(models.Model):
     user = models.ForeignKey(User) # ForeignKey to the user
-    comment = models.TextField(null=True, blank=True)
+    comment = models.TextField() # comment data is required
     '''the params below is needed to force django to populate
        the field with current date on everytime data is saved to this model.'''
     created = models.DateTimeField(auto_now_add=True) # add current date.
