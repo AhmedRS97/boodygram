@@ -32,7 +32,7 @@ class User(AbstractBaseUser):
     USERNAME_FIELD = 'email'
     '''the required fields obviously is the additional fields that will be
        also stored with Email and password'''
-    REQUIRED_FIELDS = ['first_name', 'last_name', 'birthday', 'gender']
+    REQUIRED_FIELDS = ['first_name', 'last_name', 'birthday', 'gender','username']
 
 class Comment(models.Model):
     user = models.ForeignKey(User) # ForeignKey to the user
