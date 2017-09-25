@@ -31,11 +31,12 @@ class User(AbstractUser):
     the EmailField Cuz I choose it to force the user to authentuicate using it.
     the password is Handled Automatically by the module.
     '''
-    USERNAME_FIELD = 'email'
+    EMAIL_FIELD = 'email'
+    USERNAME_FIELD = 'username'
     '''the required fields obviously is the additional fields that will be
        also stored with Email and password'''
 
-    REQUIRED_FIELDS = ['first_name', 'last_name', 'birthday', 'gender','username']
+    REQUIRED_FIELDS = ['first_name', 'last_name', 'birthday', 'gender']
     privateAccount = models.BooleanField(default=False)
     '''
     this method is responsible for making the account private.
