@@ -80,3 +80,10 @@ class Post(models.Model):
     image = models.ImageField() #obviously it's an ImageField :3
     # ForeignKey to the comment, though it's not required
     comments = models.ForeignKey(Comment,null=True, blank=True)
+
+'''many to many relationship back into (User model) follow model, I don't think
+that it will work properly. I think it must use IntegerField instead of ForeignKey'''
+class Follow(models.Model):
+    follower = models.ForeignKey(User, related_name="Follower")
+    followDate = models.DateField(auto_now=True)
+    followed = models.ForeignKey(User, related_name="Followed")
