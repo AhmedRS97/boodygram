@@ -1,9 +1,46 @@
 # importing ModelForm which it's a django default but not custom form
-from django.forms import ModelForm
-from .models import Post # importing the post models
+from django import forms
+from .models import Post, User # importing models
+from datetime import date
 
-class PostForm(ModelForm):
+class PostForm(forms.ModelForm):
     class Meta:
         model = Post
         fields = ['description','tag_user','address','location','image']
         exclude = ['comments']
+
+# User Registration Form
+class RegisterForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['email','username','first_name','last_name','birthday','gender','password']
+        widgets = {
+            'email': forms.EmailInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Email',
+            }),
+            'first_name': forms.TextInput(attrs={
+            'class': 'form-control fname',
+            'placeholder': 'First Name',
+            }),
+            'last_name': forms.TextInput(attrs={
+            'class': 'form-control lname',
+            'placeholder': 'Last Name',
+            }),
+            'username': forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Username',
+            }),
+            # the below line is optional attributes for Date widget
+            #attrs={'class': 'form-control','placeholder': 'BirthDate',}),
+            'birthday': forms.SelectDateWidget(years=[y for y in range(1950, date.today().year+1)]),
+
+            'gender': forms.Select(attrs={
+            'class': 'form-control',
+            'placeholder': 'Gender',
+            }),
+            'password': forms.PasswordInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Password',
+            }),
+        }
