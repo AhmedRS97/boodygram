@@ -19,8 +19,14 @@ from django.contrib import admin
 from instagram.apps.core import views
 from django.conf import settings
 
+app_name = 'core'
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', views.MainPage, name="MainPage"),
-    url(r'^post/', views.PostFormView, name="PostFormView"),
-    ]
+    url(r'^logout/', views.LogOut, name="LogOut"),
+    url(r'^(?P<username>[\w.]+)/follow', views.FollowUser, name='FollowUser'),
+    url(r'^(?P<username>[\w.]+)/unfollow', views.UnfollowUser, name='UnfollowUser'),
+    url(r'^(?P<username>[\w.]+)/$', views.UserHome, name='UserHome'),
+    #url(r'^(?P<username>[\w.]+)/p/(?P<post_id>[\d]+)$', views.UserPost, name='UserPost'),
+    url(r'^(?P<username>[\w.]+)/post/$', views.PostFormView, name="PostFormView"),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
