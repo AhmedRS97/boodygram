@@ -142,6 +142,9 @@ STATICFILES_DIRS = [
 # setting must be assgined to the (appname + name of the user model)
 AUTH_USER_MODEL = 'core.User'
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 '''
 PASSWORD_HASHERS = [
     'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',
