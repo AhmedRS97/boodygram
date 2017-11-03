@@ -1,0 +1,57 @@
+<html>
+{% block user_header %}
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/static/css/user-base.css">
+  <title> BoodyGram</title>
+</head>
+{% endblock %}
+<body>
+  <nav class="navbar navbar-default container-fluid" style="border-radius: 0;padding-right: 0px;padding-left: 0px;">
+    <div class="container">
+        <div class="col-">
+            <a href="/"><div class="navbar-brand" style="margin-left:5%;color:black;"> BoodyGram </div></a>
+        </div>
+        <div class="nav navbar-nav navbar-right">
+          {%if request.user.is_authenticated %}
+          <a href="/explore/" class="btn btn-default btn-lg"> <span class="glyphicon glyphicon-zoom-in"></span></a>
+          <a href="#" class="btn btn-default btn-lg"> <span class="glyphicon glyphicon-heart-empty"></span></a>
+          <a href="/{{ request.user }}" class="btn btn-default btn-lg"><span class="glyphicon glyphicon-user"></span></a>
+          {% else%}
+          <a href="/" class="btn btn-primary btn-lg">Sign up</a>
+          <a href="/" class="btn btn-primary btn-lg">Log in</a>
+          {% endif %}
+        </div>
+    </div>
+  </nav>
+  <br>
+  {% block user_info %}
+  {% endblock %}
+  {% block post%}
+  {% endblock%}
+  <br>
+  {% block content %}
+  {% endblock %}
+  <br>
+  <!-- a href="{# url 'PostFormView' #}"> Click here to go to Posting form </a -->
+  <footer class="container">
+    <ul class='footer ul'>
+      <li><a href="/about/us/">About us</a></li>
+      <li><a href="https://help.instagram.com/">Support</a></li>
+      <li><a href="http://blog.instagram.com/">Blog</a></li>
+      <li><a href="https://instagram-press.com/">Press</a></li>
+      <li><a href="/developer/">API</a></li>
+      <li><a href="/about/jobs/">Jobs</a></li>
+      <li><a href="/legal/privacy/">Privacy</a></li>
+      <li><a href="/legal/terms/">Terms</a></li>
+      <li><a href="/explore/locations/">Directory</a></li>
+    </ul>
+  </footer>
+  {% block scripts %}
+  <script src="/static/js/jquery.min.js" charset="utf-8"></script>
+  <script src="/static/bootstrap/js/bootstrap.min.js" charset="utf-8"></script>
+  {% endblock %}
+</body>
+</html>

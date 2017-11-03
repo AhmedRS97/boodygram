@@ -1,0 +1,166 @@
+{% extends "user/user-base.html" %}
+{%load core_tags %}
+{% block user_header %}
+{{ block.super }}
+<link rel="stylesheet" href="/static/css/user-profile.css">
+{% endblock %}
+
+{% block user_info %}
+<div class="container">
+  <div class="col-xs-4 user-photo">
+    <div class="photo-wrapper">
+      {% if request.user.is_authenticated %}
+        {% if same_user %}
+        <button class="img-wrapper" title="Change profile photo">
+          <img alt="Change profile photo" class="img-responsive" src="{{user.avatar.url}}">
+        </button>
+        <form method="POST" enctype="multipart/form-data" style="display:none;">
+          {% csrf_token %}
+          <input accept="image/jpeg" id="image-upload" type="file" name="profile_photo" required capture>
+          <button onclick="submitAction()" name="btnSubmit" id="img-upload" type="submit">Save</button>
+        </form>
+        {% else %}
+        <div class="img-wrapper"><img class="img-responsive" src="{{user.avatar.url}}"></div>
+        {% endif%}
+      {% elif not request.user.is_authenticated %}
+      <div class="img-wrapper"><img class="img-responsive" src="{{user.avatar.url}}"></div>
+      {% endif %}
+    </div>
+  </div>
+  <div class="col-xs-8 user-info">
+    <div class="row">
+      <div>
+        <h1 class="h1 username-h1">{{username}}</h1>
+      </div>
+      {% if request.user.is_authenticated %} {%if same_user%}
+      <a class="edit-profile" href="#">
+        <button class="edit-profile btn btn-default btn-md">Edit Profile</button>
+      </a>
+      <div class="options col-xs-1"  style="display: inline;">
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <span class="glyphicon glyphicon-cog"></span>
+        </button>
+        <ul class="dropdown-menu">
+          <li><a href="#">Change Password</a></li>
+          <li><a href="#">Authorized Apps</a></li>
+          <li><a href="#">Notifications</a></li>
+          <li role="separator" class="divider"></li>
+          <li><a href="/logout">Log Out</a></li>
+        </ul>
+      </div>
+      {% else %}
+      {%if is_followed%}
+      <a class="follow" href="/{{username}}/unfollow">
+        <button class="follow btn btn-default btn-md">Following</button>
+      </a> {% else %}
+      <a class="follow" href="/{{username}}/follow">
+        <button class="follow btn btn-primary btn-md">Follow</button>
+      </a> {% endif %}
+      <div style="display: inline;" class="options col-xs-1">
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <span class="glyphicon glyphicon-option-horizontal"></span>
+        </button>
+        <ul class="dropdown-menu">
+          <li><a href="#">Report user</a></li>
+          <li><a href="#">Block this user</a></li>
+        </ul>
+      </div>
+      {% endif%} {% elif not request.user.is_authenticated %}
+      <a class="follow btn btn-primary btn-lg" href="#" role='button'>Follow</a>
+      {% endif%}
+    </div>
+    <div class="badges row">
+      <b><span class="badge badge-info">{{posts_num}} </span>Posts</b>
+      {%if request.user.is_authenticated%}
+      <a href="#"><span class="badge badge-info"><b>{{followers}}</b></span><b>Followers</b></a>
+      <a href="#"><span class="badge badge-info"><b>{{following}}</b></span><b>Following</b></a>
+      {%elif not request.user.is_authenticated%}
+      <span class="badge badge-info"><b>{{followers}}</b></span><b>Followers</b>
+      <span class="badge badge-info"><b>{{following}}</b></span><b>Following</b>
+      {% endif%}
+    </div>
+    <div class="row">
+      <h4 class="h4" style="display:inline;"><b>{{user.first_name}} {{user.last_name}}</b></h4>
+      {% if user.biography %}<span>{{user.biography}}</span> {% endif %}
+    </div>
+  </div>
+  <br>
+  {% if request.user.is_authenticated and same_user%}
+  <div class="row"><div class="col-xs-4 col-xs-offset-4">
+    <a class="post" href="/{{username}}/post">
+      <button class="btn btn-primary btn-md">Post Something.</button>
+    </a>
+  </div></div>
+  {% endif %}
+</div>
+{% endblock %}
+
+{% block content %}
+
+{# for post in posts.object_list|slice:"forloop.counter:forloop.counter|add:3"#}
+{#if forloop.counter == 1 or forloop.counter|divisibleby:3 #}
+<br>
+{% if posts %}
+<div class="container">
+  {% for group in posts|splitby:3 %}
+      <div class='row' style="padding-left: 4em;padding-right: 4em;margin-bottom:2em;">
+      {% for post in group %}
+      <a href="#">
+        <div class="col-xs-4" style="width: 21.5em;height: 21.5em;">
+          <div>
+            <img alt="{{post.description}}" src="{{post.image.url}}" class="img-responsive" style="height: 100%;width: 100%;"></img>
+          </div>
+        </div>
+      </a>
+      {% endfor %}
+      </div>
+  {% endfor %}
+</div>
+<br>
+<div class="container">
+  <nav aria-label="Page navigation">
+    <div style="margin-left: auto;margin-right: auto;">
+    <ul class="pagination">
+    {% if posts.has_previous %}
+      <li>
+        <a href="?page={{ posts.previous_page_number }}"aria-label="Previous">
+          <span aria-hidden="true">&laquo;</span>
+        </a>
+      </li>
+    {% endif %}
+    {% for pg in posts.paginator.page_range %}
+        {% if posts.number == pg %}
+          <li class="active"><a href="?page={{ pg }}">{{ pg }}</a></li>
+        {% else %}
+          <li><a href="?page={{ pg }}">{{ pg }}</a></li>
+        {% endif %}
+    {% endfor %}
+    {% if posts.has_next %}
+        <li>
+          <a href="?page={{ posts.next_page_number }}" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
+    {% endif %}
+    </ul>
+  </div>
+  </nav>
+</div>
+  {% else %}
+  <div class="container">
+    <div class="alert alert-info" style="width: 50%;margin: 0 auto;text-align: center;">
+        <strong>Woohoo it's all empty here!</strong>
+    </div>
+  </div>
+  {% endif %}
+{% endblock %}
+
+{% block scripts %}
+{{ block.super }}
+<script>
+$(".img-wrapper").click(function(e) {
+  $("#image-upload").click();
+  $("img-upload").submit();
+});
+</script>
+{% endblock %}

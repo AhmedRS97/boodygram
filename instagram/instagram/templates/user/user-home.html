@@ -1,0 +1,75 @@
+{% extends "user/user-base.html" %}
+
+{% block user_header %}
+{{ block.super }}
+{% endblock %}
+
+{% block content %}
+<br>
+{% if posts %}
+<div class="container">
+  {% for post in posts %}
+  <div class='row'>
+    <article class="col-xs-push-3 col-xs-6" style="padding:0;border:1px solid #e6e6e6;">
+      <div>
+        <header class="post-header" style="background-color:white;border-bottom: 1px solid #efefef;padding: 0.8em;">
+          <div style="display:inline;border-radius: 50%;border: 0 solid black;width: 2.8em;">
+            <a href="/{{post.user.username}}">
+              <img src="{{post.user.avatar.url}}" class="img-responsive" style="border-radius: 50%;width: 2.8em;display: inline;">
+            </a>
+          </div>
+          <strong> &nbsp;
+            <a href="/{{post.user.username}}">{{post.user.username}}</a>
+          </strong>
+        </header>
+        <img alt="{{post.description}}" src="{{post.image.url}}" class="img-responsive" style="width:100%"></img>
+        <div class="comments">
+        </div>
+      </div>
+    </article>
+  </div>
+  <br> <br>
+  {% endfor %}
+</div>
+<br>
+<div class="container">
+  <nav aria-label="Page navigation">
+    <div style="margin-left: auto;margin-right: auto;">
+    <ul class="pagination">
+    {% if posts.has_previous %}
+      <li>
+        <a href="?page={{ posts.previous_page_number }}"aria-label="Previous">
+          <span aria-hidden="true">&laquo;</span>
+        </a>
+      </li>
+    {% endif %}
+    {% for pg in posts.paginator.page_range %}
+        {% if posts.number == pg %}
+          <li class="active"><a href="?page={{ pg }}">{{ pg }}</a></li>
+        {% else %}
+          <li><a href="?page={{ pg }}">{{ pg }}</a></li>
+        {% endif %}
+    {% endfor %}
+    {% if posts.has_next %}
+        <li>
+          <a href="?page={{ posts.next_page_number }}" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
+    {% endif %}
+    </ul>
+  </div>
+  </nav>
+</div>
+  {% else %}
+  <div class="container">
+    <div class="alert alert-info" style="width: 50%;margin: 0 auto;text-align: center;">
+        <strong>Woohoo it's all empty here!</strong>
+    </div>
+  </div>
+  {% endif %}
+{% endblock %}
+
+{% block scripts %}
+{{ block.super }}
+{% endblock %}

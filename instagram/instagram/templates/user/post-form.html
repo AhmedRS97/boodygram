@@ -1,0 +1,15 @@
+{% extends 'user/user-base.html' %}
+
+{% block post%}
+<div class="container">
+  <form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form }}
+    <button type="submit">Save</button>
+  </form>
+</div>
+{% endblock%}
+
+{% block scripts %}
+{{ block.super }}
+{% endblock %}
