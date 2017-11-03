@@ -2,6 +2,8 @@
 from django import forms
 from .models import Post, User # importing models
 from datetime import date
+from django.contrib.auth import authenticate, login, logout
+import re
 
 class PostForm(forms.ModelForm):
     class Meta:
@@ -18,9 +20,15 @@ class PostForm(forms.ModelForm):
 
 # User Registration Form
 class RegisterForm(forms.ModelForm):
+    password2 = forms.CharField(required=True,
+        widget=forms.PasswordInput(attrs={
+            'class': 'form-control','placeholder': 'Confirm Password',}))
     class Meta:
         model = User
-        fields = ['email','username','first_name','last_name','birthday','gender','password']
+        fields = ['email','username','first_name',
+                'last_name','birthday','gender',
+                'password','password2',
+                ]
         widgets = {
             'email': forms.EmailInput(attrs={
                 'class': 'form-control', 'placeholder': 'Email'}),
@@ -39,6 +47,22 @@ class RegisterForm(forms.ModelForm):
             'password': forms.PasswordInput(attrs={
                 'class': 'form-control', 'placeholder': 'Password'}),
         }
+    def clean(self, *args, **kwargs):
+        password = self.cleaned_data['password']
+        password2 = self.cleaned_data['password2']
+        username = self.cleaned_data['username']
+        message = "Password must contain at least 2 digits,be at least 2 uppercase and be more than 6 letters."
+        if len(password) < 6:
+            raise forms.ValidationError(message)
+        if sum(c.isdigit() for c in password) < 2:
+            raise forms.ValidationError(message)
+        if sum(c.isupper() for c in password) < 2:
+            raise forms.ValidationError(message)
+        if password != password2:
+            raise forms.ValidationError('Password Must match.')
+        if not re.search(r'^[\w.]+$', username):
+            raise forms.ValidationError('Usernames can only use letters, numbers, underscores and periods.')
+        return super(RegisterForm, self).clean(*args, **kwargs)
 
 # User Login Form
 class LoginForm(forms.ModelForm):
