@@ -1,0 +1,61 @@
+@font-face {
+    font-family: 'billabong';
+    src: url('/static/fonts/billabong/Billabong.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'billabong-Bold';
+  src: url('/static/fonts/billabong/Billabong Bold.ttf') format('truetype');
+}
+body {
+  background-color: #fafafa;
+}
+footer>* {
+  margin-top: 3%;
+}
+/*ul.container.footer {
+    margin-left: 23%;
+} */
+.footer.ul > * {
+  display: inline;
+  margin-right: 3%;
+}
+nav.navbar {
+  background-color: #fff;
+  padding-top: 0.75em;
+  padding-bottom: 0.75em;
+}
+nav.navbar>.container {
+  padding-left: 3em;
+  padding-right: 3em;
+}
+div.navbar-brand{
+  font-size: 2.5em;
+  font-family: billabong;
+  font-weight: bold;
+  text-align: center;
+}
+.nav.navbar-nav.navbar-right { /*>.form-group { */
+  margin-top: 0;
+  margin-bottom: 0;
+  padding-top: 0.4em;
+  padding-bottom: 0.4em;
+  height: 2em;
+  margin-right: 8%;
+  width: 15em;
+}
+.base-row {
+  margin-right: 0;
+  margin-left: 0;
+}
+/*a.nav-links>span {
+  height: 6%;
+  width: 6%;
+  margin-right: 5%;
+} */
+.glyphicon {
+  font-size: 1.3em;
+}
+a.btn {
+  margin-right: 5%;
+  border-width: 0;
+}

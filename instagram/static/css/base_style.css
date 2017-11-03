@@ -1,0 +1,78 @@
+@font-face {
+    font-family: 'billabong';
+    src: url('../fonts/billabong/Billabong.ttf') format('truetype');
+}
+@@font-face {
+  font-family: 'billabong-Bold';
+  src: url('../fonts/billabong/Billabong Bold.ttf') format('truetype');
+}
+body {
+  background-color: #fafafa;
+}
+.hidden-xs {
+  align-self: center;
+  padding-right: 0;
+}
+.btn-primary {
+  background: #3897f0 none repeat scroll 0 0;
+  border-color: #3897f0;
+  color: #fff;
+}
+.hidden-xs> img {
+  float: right;
+}
+#fname {
+  padding: 0;
+}
+#lname {
+  padding-right: 0;
+  margin-bottom: 6px;
+}
+.sign-up-terms {
+  color: #999;
+  margin: 10px 60px;
+  font-size: 14px;
+  line-height: 18px;
+  text-align: center;
+}
+.sign-up-terms > a {
+  color: #999;
+  font-weight: 600;
+}
+ul {
+  margin-top: 8%;
+  padding-left: 25%;
+}
+ul>* {
+  display: inline;
+  margin-right: 3%;
+}
+.regfrm {
+  background: #fff;
+  border: 1px solid #e6e6e6;
+  border-radius: 1px;
+  margin: 0 0 10px;
+}
+#site-name {
+  font-family: billabong;
+  font-size: 5em;
+  text-align: center;
+}
+/*form:nth-child(1) { >.form-group { */
+  /* margin-top: 0.75em;
+  margin-bottom: 0;
+}*/
+.nav.navbar-nav.navbar-right { /*>.form-group { */
+  margin-top: 0;
+  margin-bottom: 0;
+  padding-top: 0.4em;
+  padding-bottom: 0.4em;
+  height: 2em;
+}
+.row {
+  margin-right: 0;
+  margin-left: 0;
+}
+.regfrm > form > * > * {
+  margin-bottom: 6px;
+}

@@ -1,0 +1,53 @@
+div.user-photo {
+  padding-right: 0px;
+}
+div.photo-wrapper {
+  width: 11em;
+  margin-left: auto;
+  margin-right: auto;
+}
+button.img-wrapper {
+  border: 1px;
+  padding: 0;
+  border-radius: 50%;
+}
+button.img-wrapper > img {
+  border-radius: 50%;
+}
+div.img-wrapper > img {
+  border-radius: 50%;
+}
+h1.username-h1 {
+  margin-top: auto;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 69%;
+  display: inline;
+  width: auto;
+  float: left;
+  margin-right: 0.3em
+}
+a.edit-profile {
+  width: auto;
+  display: inline;
+  float: left;
+  margin-left: 0.5em;
+}
+a.follow {
+  width: auto;
+  display: inline;
+  float: left;
+  margin-left: 0.5em;
+}
+.badge-info {
+  background-color: #3a87ad;
+}
+.badge-info:hover {
+  background-color: #2d6987;
+}
+div.badges >* {
+  margin-right: 1.5em;
+}
+.user-info > * {
+  padding-bottom: 1em;
+}
