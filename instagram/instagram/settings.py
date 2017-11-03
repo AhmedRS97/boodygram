@@ -92,6 +92,7 @@ DATABASES = {
         'USER': 'ahmed',
         'PASSWORD': 'Virus357159++',
         'HOST': '127.0.0.1',
+        'OPTIONS': {'charset': 'utf8mb4'},
      }
 }
 
