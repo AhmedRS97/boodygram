@@ -65,17 +65,21 @@ class RegisterForm(forms.ModelForm):
         return super(RegisterForm, self).clean(*args, **kwargs)
 
 # User Login Form
-class LoginForm(forms.ModelForm):
-    class Meta:
-        model = User
-        fields = ['username', 'password']
-        widgets = {
-            'username': forms.TextInput(attrs={
-            'class': 'form-control',
-            'placeholder': 'Username',
-            }),
-            'password': forms.PasswordInput(attrs={
-            'class': 'form-control',
-            'placeholder': 'Password',
-            }),
-        }
+class LoginForm(forms.Form): #forms.ModelForm):
+    username = forms.CharField(widget=forms.TextInput(attrs={
+    'class': 'form-control','placeholder': 'Username',}))
+    password = forms.CharField(widget = forms.PasswordInput(attrs={
+    'class': 'form-control','placeholder': 'Password',}))
+    def clean(self, *args, **kwargs):
+        username = self.cleaned_data.get('username')
+        password = self.cleaned_data.get('password')
+        user_qs = User.objects.filter(username=username)
+        if user_qs.count() == 0:
+            raise forms.ValidationError("The user does not exist")
+        else:
+            user = authenticate(username=username, password=password)
+            if not user:
+                raise forms.ValidationError("Incorrect password")
+            if not user.is_active:
+                raise forms.ValidationError("This user is no longer active")
+        return super(LoginForm, self).clean(*args, **kwargs)
