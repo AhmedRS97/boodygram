@@ -25,7 +25,7 @@ class User(AbstractUser):
     )
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
     email = models.EmailField(unique=True)
-    username = models.CharField(max_length=64, unique=True)
+    username = models.CharField(max_length=30, unique=True)
     '''
     the below is the required Authentication field by AbstractUser, its value is
     the EmailField Cuz I choose it to force the user to authentuicate using it.
