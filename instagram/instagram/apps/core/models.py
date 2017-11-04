@@ -51,7 +51,7 @@ class User(AbstractUser):
 
 class Comment(models.Model):
     user = models.ForeignKey(User) # ForeignKey to the user
-    comment = models.TextField() # comment data is required
+    comment = models.TextField(max_length=2200) # comment data is required
     '''the params below is needed to force django to populate
        the field with current date on everytime data is saved to this model.'''
     created = models.DateTimeField(auto_now_add=True) # add current date.
@@ -66,7 +66,7 @@ class Post(models.Model):
     updated = models.DateTimeField(auto_now=True) # update date.
     '''params below is denoting that this field is Optional and django can
        put empty data in it'''
-    description = models.TextField(null=True, blank=True) # data isn't required
+    description = models.TextField(max_length=2200,null=True, blank=True) # data isn't required
     '''tagging users, I think there's a logical error here.
      it will be changed soon to tag people on photos instead.
      also it isn't required.
