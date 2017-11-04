@@ -97,3 +97,15 @@ class TimelineItem(models.Model):
     followers = models.ManyToManyField(User, related_name="Followers")
     Date = models.DateField(auto_now=True)
     post = models.ForeignKey(Post, related_name="Post")
+
+def create_TimelineItem(sender, **kwargs):
+    '''
+    A signal (hook) function to create Timeline Item.
+    '''
+    followers = [i.follower for i in Follow.objects.filter(followed=kwargs['instance'].user)]
+    if kwargs['created']:
+        timeline_item= TimelineItem.objects.create(post=kwargs['instance'])
+        timeline_item.followers.add(kwargs['instance'].user,*followers)
+
+# post_save signal connection between Post instance and create_TimelineItem function
+post_save.connect(create_TimelineItem, sender=Post)
