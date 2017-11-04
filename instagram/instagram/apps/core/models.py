@@ -1,9 +1,10 @@
-''' use this instead of the default hashing method
-from passlib.hash import pbkdf2_sha256 '''
+# use this instead of the default hashing method
+#from passlib.hash import pbkdf2_sha256
 
 from django.db import models
 from location_field.models.plain import PlainLocationField
 from django.contrib.auth.models import AbstractUser
+from django.db.models.signals import post_save
 
 #Documentation is a headache for me :3
 # Create your models here.
@@ -17,11 +18,10 @@ class User(AbstractUser):
     last_name = models.CharField(max_length=60)  #    Pretty       :3
     birthday = models.DateField() #obvious too :3
     biography = models.TextField(null=True, blank=True) # data isn't required
-    avatar = models.ImageField(null=True, blank=True) # data isn't required
+    avatar = models.ImageField(upload_to='media', default="media/no-avatar.jpg") # data isn't required
     GENDER_CHOICES = (
         ('M', 'Male'),
         ('F', 'Female'),
-        ('o', 'Other'),
     )
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
     email = models.EmailField(unique=True)
@@ -81,8 +81,7 @@ class Post(models.Model):
     # ForeignKey to the comment, though it's not required
     comments = models.ForeignKey(Comment,null=True, blank=True)
 
-'''many to many relationship back into (User model) follow model, I don't think
-that it will work properly. I think it must use IntegerField instead of ForeignKey'''
+'''many to many relationship back into (User model) follow model'''
 class Follow(models.Model):
     follower = models.ForeignKey(User, related_name="Follower")
     followDate = models.DateField(auto_now=True)
