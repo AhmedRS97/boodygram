@@ -8,12 +8,12 @@ from django.db.models.signals import post_save
 
 #Documentation is a headache for me :3
 # Create your models here.
-'''
+class User(AbstractUser):
+    '''
 user model that's Inheriting from AbstractUser which is a django Built-in
 User model, it's very handy because it takes care of storing/hashing passwords
 and Authenticating users.
-'''
-class User(AbstractUser):
+    '''
     first_name = models.CharField(max_length=60) #it's      obvious
     last_name = models.CharField(max_length=60)  #    Pretty       :3
     birthday = models.DateField() #obvious too :3
@@ -81,8 +81,19 @@ class Post(models.Model):
     # ForeignKey to the comment, though it's not required
     comments = models.ForeignKey(Comment,null=True, blank=True)
 
-'''many to many relationship back into (User model) follow model'''
 class Follow(models.Model):
+    '''many to many relationship back into (User model) follow model'''
     follower = models.ForeignKey(User, related_name="Follower")
     followDate = models.DateField(auto_now=True)
     followed = models.ForeignKey(User, related_name="Followed")
+
+class TimelineItem(models.Model):
+    '''
+    A model that make a timeline item for each post, it have many to many user
+    relationship. and have a ForeignKey to the post.
+    every instance of this TimelineItem model will be handled by a view when
+    a user request the home page.
+    '''
+    followers = models.ManyToManyField(User, related_name="Followers")
+    Date = models.DateField(auto_now=True)
+    post = models.ForeignKey(Post, related_name="Post")
