@@ -77,7 +77,7 @@ class Post(models.Model):
     '''PlainLocationField is a field Inherited from location_field Lib.
        though its javascript is having errors! no data is required'''
     location = PlainLocationField(based_fields=['address'], zoom=7,null=True, blank=True)
-    image = models.ImageField() #obviously it's an ImageField :3
+    image = models.ImageField(upload_to='media') #fixed an issue in media directory
     # ForeignKey to the comment, though it's not required
     comments = models.ForeignKey(Comment,null=True, blank=True)
 
