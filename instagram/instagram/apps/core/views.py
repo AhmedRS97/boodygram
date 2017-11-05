@@ -64,6 +64,24 @@ timeline_posts=TimelineItem.objects.all().order_by('-Date')
 # i'm only working in local (my laptop) host right now (november 2017).
 # so i don't know how to handle this with a big server.
 
+def Timeline(request):
+    '''
+    this view will read the timeline items from timeline_posts variable.
+    then it append the timeline item's post to the posts_list variable if the
+    user in the followers field. then it makes a paginator for posts_list, then
+    it render 'user-home' template with the paginator object variable posts.
+    '''
+    posts_list=[x.post for x in timeline_posts if request.user in x.followers.all()]
+    paginator = Paginator(posts_list, 18)
+    try:
+        page = int(request.GET.get('page', '1'))
+    except:
+        page = 1
+    try:
+        posts = paginator.page(page)
+    except(EmptyPage, InvalidPage):
+        posts = paginator.page(paginator.num_pages)
+    return render(request, 'user/user-home.html', {'posts':posts})
 
 #main page view
 def MainPage(request):
