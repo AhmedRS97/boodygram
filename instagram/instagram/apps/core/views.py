@@ -105,24 +105,21 @@ password fields are found.. I think this approach is weak!!.
             return Login(request)
     return redirect('MainPage')
 
-# defining the Post Form view
-@login_required #the login_required decorator > will check if user is logged in
-def PostFormView(request):
-    if request.method == "POST":
-        # request.FILES is for getting the attached images or files
-        form = PostForm(request.POST, request.FILES)
-        # checking if the Form data is valid.
-        if form.is_valid():
-            '''
-            (commit=False) means that it will keep the data but will not commit
-            it, thus enabling us to modify its values before the final commit.
-            '''
-            post = form.save(commit=False)
-            post.user = User.objects.get(pk=request.user.pk)
-            #post.created = timezone.now() # under test
-            post.save()
-            return redirect('admin/')
+#@login_required #the login_required decorator > will check if user is logged in
+def PostFormView(request, username):
+    if request.user.is_authenticated:
+        if request.method == "GET":
+            form = PostForm()
+        if request.method == "POST":
+            # request.FILES is for getting the attached images or files
+            form = PostForm(request.POST, request.FILES)
+            # checking if the Form data is valid.
+            if form.is_valid():
+                post = form.save(commit=False)
+                post.user = User.objects.get(pk=request.user.pk)
+                post.save()
+                return redirect('MainPage') # redirects to MainPage url.
 
+        return render(request, 'user/post-form.html', {'form':form})
     else:
-        form = PostForm()
-    return render(request, 'post-form.html', {'form':form})
+        return redirect('MainPage') # redirects to MainPage url.
