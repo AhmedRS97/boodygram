@@ -145,6 +145,20 @@ NOTE: the template have UI logic in it, that it will show things differently.
             'followers':followers_num, 'following':followed_num,
             'username':username,'posts_num':posts_num,'same_user':None})
 
+def FollowUser(request, username):
+    '''
+this is view takes username argument from the url. it checks if the user is authenticated
+then it query to find out if the user is not already following the target user,
+if true it will create the follow object and then refresh the page.
+    '''
+    if request.user.is_authenticated:
+        followed= get_or_none(Follow,
+            follower=request.user,followed=User.objects.get(username=username))
+        if followed == None:
+            Follow.objects.create(follower=request.user,
+                followed=User.objects.get(username=username))
+    return redirect('/'+username)
+
 #@login_required #the login_required decorator > will check if user is logged in
 def PostFormView(request, username):
     if request.user.is_authenticated:
