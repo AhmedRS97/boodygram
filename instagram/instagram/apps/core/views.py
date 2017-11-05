@@ -33,6 +33,26 @@ def Register(request):
             'signupform':form,
             'loginform':LoginForm()})
 
+def Login(request):
+    '''
+    a Login view that validates the form's data and authenticate and login the
+    user and redirect the user to the profile page. if the form's data is
+    invalid it will render the same page and form's data but with warnings.
+    '''
+    form = LoginForm(request.POST)
+    if form.is_valid():
+        username = form.cleaned_data['username']
+        password = form.cleaned_data['password']
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            if user.is_active:
+                login(request, user)
+                return redirect('/'+username)
+    else:
+        return render(request, 'base.html', {
+            'signupform':RegisterForm(),
+            'loginform':form})
+
 #main page view
 def MainPage(request):
     return render(request, 'base.html')
