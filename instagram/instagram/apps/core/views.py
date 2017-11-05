@@ -83,9 +83,27 @@ def Timeline(request):
         posts = paginator.page(paginator.num_pages)
     return render(request, 'user/user-home.html', {'posts':posts})
 
-#main page view
 def MainPage(request):
-    return render(request, 'base.html')
+    '''
+this function will handle both Get and Post requests. in Get requests it will
+redirect the users if authenticated, otherwise, they will Get Signup/Login form.
+In Post requests it will Create a user if the form has gender field. otherwise,
+it will authenticate user if the Post have <= 3 fields and check for username &
+password fields are found.. I think this approach is weak!!.
+    '''
+    if request.method == "GET":
+        if request.user.is_authenticated:
+            return Timeline(request)
+        else:
+            return render(request, 'base.html', {
+                'signupform':RegisterForm(),
+                'loginform':LoginForm()})
+    if request.method == "POST":
+        if 'gender' in request.POST:
+            return Register(request)
+        if len(request.POST) <= 3 and 'username' in request.POST and 'password' in request.POST:
+            return Login(request)
+    return redirect('MainPage')
 
 # defining the Post Form view
 @login_required #the login_required decorator > will check if user is logged in
