@@ -53,6 +53,11 @@ def Login(request):
             'signupform':RegisterForm(),
             'loginform':form})
 
+def LogOut(request):
+    '''a logout view that logout the user if user is authenticated.'''
+    if request.user.is_authenticated: logout(request)
+    return redirect('MainPage')
+
 #main page view
 def MainPage(request):
     return render(request, 'base.html')
