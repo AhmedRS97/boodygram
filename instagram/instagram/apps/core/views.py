@@ -3,6 +3,7 @@ from .models import * # importing the models
 from .forms import * # importing the forms
 from django.contrib.auth.decorators import login_required #good decorator
 from django.contrib.auth import authenticate, login, logout
+from django.core.paginator import Paginator # the good ol' paginator :D
 
 # Create your views here.
 
@@ -57,6 +58,12 @@ def LogOut(request):
     '''a logout view that logout the user if user is authenticated.'''
     if request.user.is_authenticated: logout(request)
     return redirect('MainPage')
+
+# this loads all the timeline items to the ram, in this case it's a bad practice.
+timeline_posts=TimelineItem.objects.all().order_by('-Date')
+# i'm only working in local (my laptop) host right now (november 2017).
+# so i don't know how to handle this with a big server.
+
 
 #main page view
 def MainPage(request):
