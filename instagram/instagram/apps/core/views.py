@@ -159,6 +159,18 @@ if true it will create the follow object and then refresh the page.
                 followed=User.objects.get(username=username))
     return redirect('/'+username)
 
+def UnfollowUser(request, username):
+    '''
+it's the opposite of FollowUser view.
+    '''
+    if request.user.is_authenticated:
+        followed= get_or_none(Follow,
+            follower=request.user,followed=User.objects.get(username=username))
+        if followed != None:
+            Follow.objects.get(follower=request.user,
+                followed=User.objects.get(username=username)).delete()
+    return redirect('/'+username)
+
 #@login_required #the login_required decorator > will check if user is logged in
 def PostFormView(request, username):
     if request.user.is_authenticated:
