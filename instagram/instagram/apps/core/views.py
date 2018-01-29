@@ -43,8 +43,8 @@ def Register(request):
                 return redirect('/'+username)
     else:
         return render(request, 'base.html', {
-            'signupform':form,
-            'loginform':LoginForm()})
+            'signupform': form,
+            'loginform': LoginForm()}, status=401)  # returning status 401 if form is invalid.
 
 
 def Login(request):
@@ -65,7 +65,7 @@ def Login(request):
     else:
         return render(request, 'base.html', {
             'signupform': RegisterForm(),
-            'loginform':form})
+            'loginform': form}, status=401)  # returning status 401 if form is invalid.
 
 
 def LogOut(request):
