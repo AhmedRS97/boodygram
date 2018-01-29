@@ -82,19 +82,28 @@ class Post(models.Model):
     # ForeignKey to the comment, though it's not required
     comments = models.ForeignKey(Comment,null=True, blank=True)
 
+
+class FollowRequest(models.Model):
+    """ many to many relationship back into (User model) FollowRequest model """
+    requester = models.ForeignKey(User, related_name="requester")
+    requestDate = models.DateField(auto_now=True)
+    requested = models.ForeignKey(User, related_name="requested")
+
+
 class Follow(models.Model):
-    '''many to many relationship back into (User model) follow model'''
+    """many to many relationship back into (User model) follow model"""
     follower = models.ForeignKey(User, related_name="Follower")
     followDate = models.DateField(auto_now=True)
     followed = models.ForeignKey(User, related_name="Followed")
 
+
 class TimelineItem(models.Model):
-    '''
+    """
     A model that make a timeline item for each post, it have many to many user
     relationship. and have a ForeignKey to the post.
     every instance of this TimelineItem model will be handled by a view when
     a user request the home page.
-    '''
+    """
     followers = models.ManyToManyField(User, related_name="Followers")
     Date = models.DateField(auto_now=True)
     post = models.ForeignKey(Post, related_name="Post")
