@@ -4,6 +4,7 @@ from .models import Post, User # importing models
 from datetime import date
 from django.contrib.auth import authenticate, login, logout
 import re
+# from django.shortcuts import HttpResponse
 
 class PostForm(forms.ModelForm):
     class Meta:
@@ -83,3 +84,8 @@ class LoginForm(forms.Form): #forms.ModelForm):
             if not user.is_active:
                 raise forms.ValidationError("This user is no longer active")
         return super(LoginForm, self).clean(*args, **kwargs)
+
+class ProfilePhoto(forms.Form):
+    avatar = forms.ImageField(widget= forms.FileInput(attrs={
+        "id": "image-upload", "type": "file", "name": "profile_photo"
+    }))
