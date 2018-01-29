@@ -12,11 +12,12 @@
       {% if request.user.is_authenticated %}
         {% if same_user %}
         <button class="img-wrapper" title="Change profile photo">
-          <img alt="Change profile photo" class="img-responsive" src="{{user.avatar.url}}">
+          <img alt="Change profile photo" id="profile-pic" class="img-responsive" src="{{user.avatar.url}}">
         </button>
         <form method="POST" enctype="multipart/form-data" style="display:none;">
           {% csrf_token %}
-          <input accept="image/jpeg" id="image-upload" type="file" name="profile_photo" required capture>
+          <!--input accept="image/jpeg" id="image-upload" type="file" name="profile_photo" required-->
+          {{ form.avatar }}
           <button onclick="submitAction()" name="btnSubmit" id="img-upload" type="submit">Save</button>
         </form>
         {% else %}
@@ -30,7 +31,7 @@
   <div class="col-xs-8 user-info">
     <div class="row">
       <div>
-        <h1 class="h1 username-h1">{{username}}</h1>
+        <h1 class="h1 username-h1">{{user.username}}</h1>
       </div>
       {% if request.user.is_authenticated %} {%if same_user%}
       <a class="edit-profile" href="#">
@@ -50,10 +51,10 @@
       </div>
       {% else %}
       {%if is_followed%}
-      <a class="follow" href="/{{username}}/unfollow">
+      <a class="follow" href="{{user.get_absolute_url}}unfollow">
         <button class="follow btn btn-default btn-md">Following</button>
       </a> {% else %}
-      <a class="follow" href="/{{username}}/follow">
+      <a class="follow" href="{{user.get_absolute_url}}follow">
         <button class="follow btn btn-primary btn-md">Follow</button>
       </a> {% endif %}
       <div style="display: inline;" class="options col-xs-1">
@@ -87,7 +88,7 @@
   <br>
   {% if request.user.is_authenticated and same_user%}
   <div class="row"><div class="col-xs-4 col-xs-offset-4">
-    <a class="post" href="/{{username}}/post">
+    <a class="post" href="{{user.get_absolute_url}}post">
       <button class="btn btn-primary btn-md">Post Something.</button>
     </a>
   </div></div>
@@ -108,7 +109,8 @@
       <a href="#">
         <div class="col-xs-4" style="width: 21.5em;height: 21.5em;">
           <div>
-            <img alt="{{post.description}}" src="{{post.image.url}}" class="img-responsive" style="height: 100%;width: 100%;"></img>
+              <img alt="{{ post.description }}" src="{{ post.image.url }}" class="img-responsive"
+                   style="height: 100%;width: 100%;"/>
           </div>
         </div>
       </a>
@@ -119,31 +121,31 @@
 <br>
 <div class="container">
   <nav aria-label="Page navigation">
-    <div style="margin-left: auto;margin-right: auto;">
-    <ul class="pagination">
-    {% if posts.has_previous %}
-      <li>
-        <a href="?page={{ posts.previous_page_number }}"aria-label="Previous">
-          <span aria-hidden="true">&laquo;</span>
-        </a>
-      </li>
-    {% endif %}
-    {% for pg in posts.paginator.page_range %}
-        {% if posts.number == pg %}
-          <li class="active"><a href="?page={{ pg }}">{{ pg }}</a></li>
-        {% else %}
-          <li><a href="?page={{ pg }}">{{ pg }}</a></li>
+    <div class="text-center" >
+        <ul class="pagination">
+        {% if page_obj.has_previous %}
+          <li>
+            <a href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
         {% endif %}
-    {% endfor %}
-    {% if posts.has_next %}
-        <li>
-          <a href="?page={{ posts.next_page_number }}" aria-label="Next">
-            <span aria-hidden="true">&raquo;</span>
-          </a>
-        </li>
-    {% endif %}
-    </ul>
-  </div>
+        {% for pg in page_obj.paginator.page_range %}
+            {% if page_obj.number == pg %}
+              <li class="active"><a href="?page={{ pg }}">{{ pg }}</a></li>
+            {% else %}
+              <li><a href="?page={{ pg }}">{{ pg }}</a></li>
+            {% endif %}
+        {% endfor %}
+        {% if page_obj.has_next %}
+            <li>
+              <a href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+              </a>
+            </li>
+        {% endif %}
+        </ul>
+    </div>
   </nav>
 </div>
   {% else %}
@@ -158,9 +160,33 @@
 {% block scripts %}
 {{ block.super }}
 <script>
-$(".img-wrapper").click(function(e) {
-  $("#image-upload").click();
-  $("img-upload").submit();
+new
+
+$(document).ready(function() {
+
+    var readURL = function(input) {
+      if (input.files && input.files[0]) {
+        var reader = new FileReader();
+
+        reader.onload = function(e) {
+          $('#profile-pic').attr('src', e.target.result);
+        }
+        reader.readAsDataURL(input.files[0]);
+      }
+    }
+
+    $("#image-upload").on('change', function() {
+      readURL(this);
+    });
 });
+
+$(".img-wrapper").click(function(e) {
+    $("#image-upload").click();
+    $("#image-upload").on("change", () => $("#img-upload").click());
+});
+
+function submitAction() {
+    $("#form").submit()
+}
 </script>
 {% endblock %}
