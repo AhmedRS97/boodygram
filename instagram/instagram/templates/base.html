@@ -1,114 +1,115 @@
 <html>
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css">
-  <link rel="stylesheet" href="/static/css/base_style.css">
-  <title> BoodyGram</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="/static/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/jquery.datepicker.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/base_style.css">
+    <title> BoodyGram </title>
 </head>
 <body>
-  <div class="container-fluid" style="padding-right: 0px;padding-left: 0px;">
+<div class="container-fluid" style="padding-right: 0;padding-left: 0;">
     <nav class="navbar navbar-default navbar-inverse" style="border-radius: 0;">
-      <div class="hidden-xs navbar-header">
-          <div class="navbar-brand" style="color:white;">BoodyGram</div>
-      </div>
-      <div class="nav navbar-nav navbar-right" style="margin-right: 0px;">
-        <form method="POST">
-          {% csrf_token %}
-          <div class="form-group row base-row">
-            <div class="col-xs-4"> {{ loginform.username }} </div>
-            <div class="col-xs-4"> {{ loginform.password }} </div>
-            <button type="submit" class="col-xs-4 btn btn-primary btn-md"> SignIn </button>
-          </div>
-        </form>
-      </div>
+        <div class="hidden-xs navbar-header">
+            <div class="navbar-brand" style="color:white;">BoodyGram</div>
+        </div>
+        <div class="nav navbar-nav navbar-right" style="margin-right: 0;">
+            <form action="/signin/" method="POST">
+                {% csrf_token %}
+                <div class="form-group row base-row">
+                    <div class="col-xs-4"> {{ loginform.username }} </div>
+                    <div class="col-xs-4"> {{ loginform.password }} </div>
+                    <button type="submit" class="col-xs-4 btn btn-primary btn-md"> SignIn </button>
+                </div>
+            </form>
+        </div>
     </nav>
     <div class="navbar-right" style="margin-right: 10%;">
-      {% if loginform.errors %}
-          <!--div class="container"-->
-          {% for field in loginform %}
-              {% for error in field.errors %}
-                  <div class="col-xs-12 alert alert-danger">
-                      <strong>{{ error|escape }}</strong>
-                  </div>
-              {% endfor %}
-          {% endfor %}
-          {% for error in loginform.non_field_errors %}
-              <div class="alert alert-danger">
-                  <strong>{{ error|escape }}</strong>
-              </div>
-          {% endfor %}
-        <!--/div-->
-      {% endif %}
+        {% if loginform.errors %}
+            <!--div class="container"-->
+            {% for field in loginform %}
+                {% for error in field.errors %}
+                    <div class="col-xs-12 alert alert-danger">
+                        <strong>{{ error|escape }}</strong>
+                    </div>
+                {% endfor %}
+            {% endfor %}
+            {% for error in loginform.non_field_errors %}
+                <div class="alert alert-danger">
+                    <strong>{{ error|escape }}</strong>
+                </div>
+            {% endfor %}
+            <!--/div-->
+        {% endif %}
     </div>
-  </div>
-  <br>
-  <div class="container">
+</div>
+<br>
+<div class="container">
     <div class="row base-row">
-      <div class="hidden-xs hidden-sm co-md-6 col-lg-6">
-        <div class="col-md-5 col-lg-offset-3 col-lg-4" style="padding-right: 0px;">
-          <img  src="static/images/photo-wall.png">
-          <!--div class="wall-img" style="background-image: url('static/images/photo-wall.png');"> <br> </div-->
+        <div class="hidden-xs hidden-sm co-md-6 col-lg-6">
+            <div class="col-md-5 col-lg-offset-3 col-lg-4" style="padding-right: 0;">
+                <img  src="/static/images/photo-wall.png">
+                <!--div class="wall-img" style="background-image: url('static/images/photo-wall.png');"> <br> </div-->
+            </div>
         </div>
-      </div>
-      <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-        <div class="col-xs-12 col-sm-12 col-md-9 regfrm">
-          <h1 id="site-name"> BoodyGram </h1>
-          <!--h3> Sign up to see photos and videos from your friends. </h3 -->
-          <br>
-          {% if signupform.errors %}
-              {% for field in signupform %}
-                  {% for error in field.errors %}
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+            <div class="col-xs-12 col-sm-12 col-md-9 regfrm">
+                <h1 id="site-name"> BoodyGram </h1>
+                <!--h3> Sign up to see photos and videos from your friends. </h3 -->
+                <br>
+                {% if signupform.errors %}
+                    {% for field in signupform %}
+                        {% for error in field.errors %}
 
-                      <div class="alert alert-danger">
-                          <strong>{{ error|escape }}</strong>
-                      </div>
-                  {% endfor %}
-              {% endfor %}
-              {% for error in signupform.non_field_errors %}
-                  <div class="alert alert-danger">
-                      <strong>{{ error|escape }}</strong>
-                  </div>
-              {% endfor %}
-          {% endif %}
-          <form method="POST" id="signup">
-            {% csrf_token %}
-            <div> <!--class="form-group row"-->
-              <div class="col-xs-6"id="fname"> {{signupform.first_name}} </div>
-              <div class="col-xs-6" id="lname"> {{signupform.last_name}} </div>
+                            <div class="alert alert-danger">
+                                <strong>{{ error|escape }}</strong>
+                            </div>
+                        {% endfor %}
+                    {% endfor %}
+                    {% for error in signupform.non_field_errors %}
+                        <div class="alert alert-danger">
+                            <strong>{{ error|escape }}</strong>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                <form action="/signup/" method="POST" id="signup">
+                    {% csrf_token %}
+                    <div> <!--class="form-group row"-->
+                        <div class="col-xs-6" id="fname"> {{signupform.first_name}} </div>
+                        <div class="col-xs-6" id="lname"> {{signupform.last_name}} </div>
+                    </div>
+                    <div class="form-group">
+                        {{ signupform.email }}
+                        {{ signupform.username }}
+                        {{ signupform.birthday }} {% comment %}<h4><span class="label label-default">BirthDate:</span></h4>{% endcomment %}
+                        {{ signupform.password }}
+                        {{ signupform.password2 }}
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-md btn-block"> Sign Up </button>
+                    <p class="sign-up-terms">By signing up, you agree to our <br>
+                        <a href="/legal/terms/" target="_blank">Terms</a> &amp; <a href="/legal/privacy/" target="_blank">Privacy Policy</a>
+                    </p>
+                </form>
             </div>
-            <div class="form-group">
-              {{ signupform.email }}
-              {{ signupform.username }}
-              <h4><span class="label label-default">BirthDate:</span></h4> {{ signupform.birthday }}
-              <h4><span class="label label-default">Gender:</span></h4> {{ signupform.gender }}
-              {{ signupform.password }}
-              {{ signupform.password2 }}
-            </div>
-            <button type="submit" class="btn btn-primary btn-md btn-block"> Sign Up </button>
-            <p class="sign-up-terms">By signing up, you agree to our <br>
-              <a href="/legal/terms/" target="_blank">Terms</a> &amp; <a href="/legal/privacy/" target="_blank">Privacy Policy</a>
-            </p>
-          </form>
         </div>
-      </div>
     </div>
-  </div>
-  <br>
-  <footer class="container-fluid">
+</div>
+<br>
+<footer class="container-fluid">
     <ul>
-      <li><a href="/about/us/">About us</a></li>
-      <li><a href="https://help.instagram.com/">Support</a></li>
-      <li><a href="http://blog.instagram.com/">Blog</a></li>
-      <li><a href="https://instagram-press.com/">Press</a></li>
-      <li><a href="/developer/">API</a></li>
-      <li><a href="/about/jobs/">Jobs</a></li>
-      <li><a href="/legal/privacy/">Privacy</a></li>
-      <li><a href="/legal/terms/">Terms</a></li>
-      <li><a href="/explore/locations/">Directory</a></li>
+        <li><a href="/about/us/">About us</a></li>
+        <li><a href="https://help.boodygram.com/">Support</a></li>
+        <li><a href="http://blog.boodygram.com/">Blog</a></li>
+        <li><a href="https://boodygram-press.com/">Press</a></li>
+        <li><a href="/developer/">API</a></li>
+        <li><a href="/about/jobs/">Jobs</a></li>
+        <li><a href="/legal/privacy/">Privacy</a></li>
+        <li><a href="/legal/terms/">Terms</a></li>
+        <li><a href="/explore/locations/">Directory</a></li>
     </ul>
-  </footer>
-  <script src="/static/js/jquery.min.js" charset="utf-8"></script>
-  <script src="/static/bootstrap/js/bootstrap.min.js" charset="utf-8"></script>
+</footer>
+<script src="/static/js/jquery.min.js" charset="utf-8"></script>
+<script src="/static/bootstrap/js/bootstrap.min.js" charset="utf-8"></script>
+<script src="/static/js/jquery.datepicker.min.js" charset="utf-8"></script>
 </body>
 </html>
