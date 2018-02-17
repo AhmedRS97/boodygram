@@ -20,52 +20,52 @@ from django.core.urlresolvers import reverse
 # Create your views here.
 
 
-def Register(request):
+def signup(request):
     """
-    a Register view that validate a form's data and save it to database, then
+    a signup view that validate a form's data and save it to database, then
     it authenticate and login the user and redirect to the user profile page.
-    if the form's data is invalid it will render the same page and form's data
-    but with warnings.
+    if the form's data is invalid it will render the MainPage with the form's
+    data but with warnings.
     """
-    form = RegisterForm(request.POST)
-    if form.is_valid():
-        #(commit=False) means that it will keep the data but will not commit it.
-        # thus enabling us to modify its values before the final commit.
-        user = form.save(commit=False)
-        username = form.cleaned_data['username']
-        password = form.cleaned_data['password']
-        user.set_password(password)
-        user.save()
-        user = authenticate(username=username, password=password)
-        if user is not None:
-            if user.is_active:
+    if request.user.is_anonymous and request.method == 'POST':
+        form = RegisterForm(request.POST)
+        if form.is_valid():
+            # (commit=False) means that it will keep the data but will not commit it.
+            # thus enabling us to modify its values before the final commit.
+            user = form.save(commit=False)
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            user.set_password(password)
+            user.save()
+            user = authenticate(username=username, password=password)
+            if user is not None and user.is_active:
                 login(request, user)
-                return redirect('/'+username)
-    else:
+                return redirect(reverse('UserProfile', args=[username]))
         return render(request, 'base.html', {
             'signupform': form,
             'loginform': LoginForm()}, status=401)  # returning status 401 if form is invalid.
+    elif request.method == 'GET': return MainPage(request)
 
 
-def Login(request):
+def signin(request):
     """
-    a Login view that validates the form's data and authenticate and login the
+    a signin view that validates the form's data and authenticate and login the
     user and redirect the user to the profile page. if the form's data is
-    invalid it will render the same page and form's data but with warnings.
+    invalid it will render the MainPage with the form's data but with warnings.
     """
-    form = LoginForm(request.POST)
-    if form.is_valid():
-        username = form.cleaned_data['username']
-        password = form.cleaned_data['password']
-        user = authenticate(username=username, password=password)
-        if user is not None:
-            if user.is_active:
+    if request.user.is_anonymous and request.method == 'POST':
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            user = authenticate(username=username, password=password)
+            if user is not None and user.is_active:
                 login(request, user)
-                return redirect('/'+username)
-    else:
+                return redirect(reverse('UserProfile', args=[username]))
         return render(request, 'base.html', {
             'signupform': RegisterForm(),
             'loginform': form}, status=401)  # returning status 401 if form is invalid.
+    elif request.method == 'GET': return MainPage(request)
 
 
 def LogOut(request):
@@ -101,24 +101,16 @@ def Timeline(request):
 
 def MainPage(request):
     """
-this function will handle both Get and Post requests. in Get requests it will
-redirect the users if authenticated, otherwise, they will Get Signup/Login form.
-In Post requests it will Create a user if the form has gender field. otherwise,
-it will authenticate user if the Post have <= 3 fields and check for username &
-password fields are found.. I think this approach is weak!!.
+this function will handle Get requests. in Get requests it will return Timeline function if
+the user is authenticated, otherwise, they will Get Signup/Login form.
     """
     if request.method == "GET":
         if request.user.is_authenticated:
             return Timeline(request)
         else:
             return render(request, 'base.html', {
-                'signupform':RegisterForm(),
-                'loginform':LoginForm()})
-    if request.method == "POST":
-        if 'gender' in request.POST:
-            return Register(request)
-        if len(request.POST) <= 3 and 'username' in request.POST and 'password' in request.POST:
-            return Login(request)
+                'signupform': RegisterForm(),
+                'loginform': LoginForm()})
     return redirect('MainPage')
 
 
