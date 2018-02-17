@@ -23,6 +23,8 @@ app_name = 'core'
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', views.MainPage, name="MainPage"),
+    url(r'^signup/$', views.signup, name='Signup'),
+    url(r'^signin/$', views.signin, name="Signin"),
     url(r'^logout/', views.LogOut, name="LogOut"),
     url(r'^(?P<username>[\w.]+)/follow', views.FollowUser, name='FollowUser'),
     url(r'^(?P<username>[\w.]+)/unfollow', views.UnfollowUser, name='UnfollowUser'),
