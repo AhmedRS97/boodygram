@@ -1,6 +1,9 @@
 from django.shortcuts import _get_queryset
+import uuid
+from os.path import join
 
-#custom function that substitute get_list_or_404 cuz i don't want 404.
+
+# custom function that substitute get_list_or_404 cuz i don't want 404.
 def filter_or_none(klass, *args, **kwargs):
     queryset = _get_queryset(klass)
     try:
@@ -17,6 +20,7 @@ def filter_or_none(klass, *args, **kwargs):
         obj_list = None
     return obj_list
 
+
 def get_or_none(klass, *args, **kwargs):
     queryset = _get_queryset(klass)
     try:
@@ -29,3 +33,17 @@ def get_or_none(klass, *args, **kwargs):
         )
     except queryset.model.DoesNotExist:
         return None
+
+
+def get_file_path(file_dir):
+    """
+    This function is useful for join the file name to the desired directory name.
+    :param file_dir: string contains the desired directory to save the file into.
+    :return: Anonymous function that takes model instance and filename from django.
+    """
+    # extension = filename.split('.')[-1]
+    # filename = "%s.%s" % (uuid.uuid4(), ext)
+    # return join(file_dir, filename)
+    return lambda instance, filename: (
+            join(file_dir, "%s.%s" % (uuid.uuid4(), filename.split('.')[-1]))
+    )
