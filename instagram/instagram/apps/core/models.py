@@ -30,7 +30,7 @@ and Authenticating users.
         (FEMALE, 'Female'),
     )
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES, default=NOT_SPECIFIED)
-    email = models.EmailField(unique=True)
+    email = models.EmailField(unique=True, blank=False)
     username = models.CharField(max_length=30, unique=True)
 
     # the below is the required Authentication field by AbstractUser, its value is
