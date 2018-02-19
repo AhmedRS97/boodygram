@@ -7,6 +7,7 @@ from django.contrib.auth.models import AbstractUser
 from django.db.models.signals import post_save
 
 from .miscellaneous import get_file_path
+from django.core.urlresolvers import reverse
 
 
 class User(AbstractUser):
@@ -51,6 +52,10 @@ and Authenticating users.
     def set_account_to_public(self):
         """this method is responsible for making the account public."""
         self.privateAccount = False
+
+    def get_absolute_url(self):
+        """this method returns the absolute url of the user."""
+        return reverse('UserProfile', kwargs={'username': self.username})
 
 
 class Comment(models.Model):
