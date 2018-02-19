@@ -18,7 +18,7 @@ and Authenticating users.
     first_name = models.CharField(max_length=60)  # it's______obvious.
     last_name = models.CharField(max_length=60)  # _____Pretty_______
     birthday = models.DateField()  # obvious too.
-    biography = models.TextField(null=True, blank=True) # data isn't required
+    biography = models.TextField(null=True, blank=True, max_length=150)  # data isn't required
     avatar = models.ImageField(upload_to=get_file_path(file_dir="avatars/"), default="avatars/no-avatar.jpg")
 
     NOT_SPECIFIED = 'N'
