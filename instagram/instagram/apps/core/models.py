@@ -6,8 +6,9 @@ from location_field.models.plain import PlainLocationField
 from django.contrib.auth.models import AbstractUser
 from django.db.models.signals import post_save
 
-#Documentation is a headache for me :3
-# Create your models here.
+from .miscellaneous import get_file_path
+
+
 class User(AbstractUser):
     """
 user model that's Inheriting from AbstractUser which is a django Built-in
@@ -18,7 +19,7 @@ and Authenticating users.
     last_name = models.CharField(max_length=60)  # _____Pretty_______
     birthday = models.DateField()  # obvious too.
     biography = models.TextField(null=True, blank=True) # data isn't required
-    avatar = models.ImageField(upload_to='media', default="media/no-avatar.jpg") # data isn't required
+    avatar = models.ImageField(upload_to=get_file_path(file_dir="avatars/"), default="avatars/no-avatar.jpg")
 
     NOT_SPECIFIED = 'N'
     MALE = 'M'
@@ -81,7 +82,7 @@ class Post(models.Model):
     '''PlainLocationField is a field Inherited from location_field Lib.
        though its javascript is having errors! no data is required'''
     location = PlainLocationField(based_fields=['address'], zoom=7, null=True, blank=True)
-    image = models.ImageField(upload_to='media') #fixed an issue in media directory
+    image = models.ImageField(upload_to=get_file_path(file_dir="p/"))
     # ForeignKey to the comment, though it's not required
     comments = models.ForeignKey(Comment, null=True, blank=True)
 
